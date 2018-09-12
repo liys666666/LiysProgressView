@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 属性不能重复 否则编译通不过-->
+
+
+    <!-- 圆弧进度条 -->
+    <declare-styleable name="ArcProgressView">
+        <attr name="liys_progress_arc_text" format="string"/>
+        <attr name="liys_progress_arc_textSize" format="dimension"/>
+        <attr name="liys_progress_arc_textColor" format="color"/>
+        <attr name="liys_progress_arc_inCircleColor" format="color"/>
+        <attr name="liys_progress_arc_outCircleColor" format="color"/>
+        <attr name="liys_progress_arc_inCircleSize" format="dimension"/>
+        <attr name="liys_progress_arc_outCircleSize" format="dimension"/>
+        <attr name="liys_progress_arc_startAngle" format="integer"/>
+        <attr name="liys_progress_arc_drawAngle" format="integer"/>
+    </declare-styleable>
+
+    <!-- 线性进度条 -->
+    <declare-styleable name="LineProgressView">
+        <attr name="liys_progress_line_text" format="string"/>
+        <attr name="liys_progress_line_textSize" format="dimension"/>
+        <attr name="liys_progress_line_textColor" format="color"/>
+        <attr name="liys_progress_line_labelColor" format="color"/>
+        <attr name="liys_progress_line_inLineSize" format="dimension"/>
+        <attr name="liys_progress_line_outLineSize" format="dimension"/>
+        <attr name="liys_progress_line_inLineColor" format="color"/>
+        <attr name="liys_progress_line_outLineColor" format="color"/>
+    </declare-styleable>
+
+</resources>
+
