@@ -130,35 +130,18 @@ public class ArcProgressView extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
+        //取默认值
+        mWidth = sp2px(defaultWidth);
+        mHeight = sp2px(defaultWidth);
         //1. 获取宽
-        int widthSpacMode = MeasureSpec.getMode(widthMeasureSpec);
-        int widthSpecSize = MeasureSpec.getSize(widthMeasureSpec);
-
-        if (widthSpacMode == MeasureSpec.AT_MOST) { //不确定值
-            //取默认值
-            mWidth = sp2px(defaultWidth);
-        } else if (widthSpacMode == MeasureSpec.EXACTLY) { //具体值
-            mWidth = widthSpecSize;
-        } else if (widthSpacMode == MeasureSpec.UNSPECIFIED) { //最大值
-            mWidth = sp2px(defaultWidth);
+        if (MeasureSpec.getMode(widthMeasureSpec) == MeasureSpec.EXACTLY) { //具体值
+            mWidth = MeasureSpec.getSize(widthMeasureSpec);
         }
-
         //2.获取高
-        int heightSpacMode = MeasureSpec.getMode(heightMeasureSpec);
-        int heightSpecSize = MeasureSpec.getSize(heightMeasureSpec);
-
-        if (heightSpacMode == MeasureSpec.AT_MOST) { //最大值
-            //取默认值
-            mHeight = sp2px(defaultWidth);
-        } else if (heightSpacMode == MeasureSpec.EXACTLY) { //具体值
-            mHeight = heightSpecSize;
-        } else if (heightSpacMode == MeasureSpec.UNSPECIFIED) { //不确定值
-            //取默认值
-            mHeight = sp2px(defaultWidth);
+        if (MeasureSpec.getMode(heightMeasureSpec) == MeasureSpec.EXACTLY) { //具体值
+            mHeight = MeasureSpec.getSize(heightMeasureSpec);
         }
-
-        //2. 确定宽高(保持宽高一致)
+        //3. 确定宽高(保持宽高一致)
         mWidth = mHeight = (mWidth > mHeight ? mHeight : mWidth);
         setMeasuredDimension(mWidth, mHeight);
     }
@@ -167,12 +150,9 @@ public class ArcProgressView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
-
         drawText(canvas);
         drawInCircle(canvas);
         drawOutCircle(canvas);
-
     }
 
     //内圆弧
@@ -209,7 +189,6 @@ public class ArcProgressView extends View {
                 getResources().getDisplayMetrics());
     }
 
-
     public void setMaxNum(double maxNum) {
         this.mMaxNum = maxNum;
     }
@@ -221,16 +200,4 @@ public class ArcProgressView extends View {
         mText =  new DecimalFormat("0.00%").format(mCurrentNum/mMaxNum);
         invalidate();
     }
-
-
-//    /**
-//     * 判断字符串是否为数字 (包含小数和整数)
-//     * @param str
-//     * @return
-//     */
-//    public static boolean isNumeric(String str) {
-//        Pattern pattern = Pattern.compile("-?[0-9]+.?[0-9]+");
-//        Matcher isNum = pattern.matcher(str.trim());
-//        return isNum.matches();
-//    }
 }

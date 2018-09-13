@@ -6,6 +6,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.support.annotation.Nullable;
@@ -14,6 +16,7 @@ import android.util.TypedValue;
 import android.view.View;
 
 import java.text.DecimalFormat;
+
 
 public class LineProgressView extends View{
 
@@ -129,34 +132,17 @@ public class LineProgressView extends View{
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
+        //取默认值
+        mWidth = sp2px(mDefaultWidth);
+        mHeight = sp2px(mDefaultHeight);
         //1. 获取宽
-        int widthSpacMode = MeasureSpec.getMode(widthMeasureSpec);
-        int widthSpecSize = MeasureSpec.getSize(widthMeasureSpec);
-
-        if (widthSpacMode == MeasureSpec.AT_MOST) { //不确定值
-            //取默认值
-            mWidth = sp2px(mDefaultWidth);
-        } else if (widthSpacMode == MeasureSpec.EXACTLY) { //具体值
-            mWidth = widthSpecSize;
-        } else if (widthSpacMode == MeasureSpec.UNSPECIFIED) { //最大值
-            mWidth = sp2px(mDefaultWidth);
+        if (MeasureSpec.getMode(widthMeasureSpec) == MeasureSpec.EXACTLY) { //具体值
+            mWidth = MeasureSpec.getSize(widthMeasureSpec);
         }
-
         //2.获取高
-        int heightSpacMode = MeasureSpec.getMode(heightMeasureSpec);
-        int heightSpecSize = MeasureSpec.getSize(heightMeasureSpec);
-
-        if (heightSpacMode == MeasureSpec.AT_MOST) { //最大值
-            //取默认值
-            mHeight = sp2px(mDefaultHeight);
-        } else if (heightSpacMode == MeasureSpec.EXACTLY) { //具体值
-            mHeight = heightSpecSize;
-        } else if (heightSpacMode == MeasureSpec.UNSPECIFIED) { //不确定值
-            //取默认值
-            mHeight = sp2px(mDefaultHeight);
+        if (MeasureSpec.getMode(heightMeasureSpec) == MeasureSpec.EXACTLY) { //具体值
+            mHeight = MeasureSpec.getSize(heightMeasureSpec);
         }
-
         //2. 确定宽高
         setMeasuredDimension(mWidth, mHeight);
     }
@@ -165,9 +151,7 @@ public class LineProgressView extends View{
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
-
-        //1 画文字外框
+        //1 确定文字外框区域
         Rect bounds = new Rect();
         String str = "100.00%";
         mTextPaint.getTextBounds(str, 0, str.length(), bounds);
@@ -175,25 +159,36 @@ public class LineProgressView extends View{
         int boxWidth = bounds.width() + sp2px(5);
         int boxHeight = bounds.height() + sp2px(10);
         int outWidth = (int)(mCurrentNum/mMaxNum * (mWidth-boxWidth)); //计算当前进度距离
-        drawBox(canvas, outWidth, boxWidth, boxHeight);
+        drawBox(canvas, outWidth, boxWidth, boxHeight); //绘制外框
 
         //2 画文字
         Paint.FontMetricsInt metrics = mTextPaint.getFontMetricsInt();
         int dy = (metrics.bottom - metrics.top) / 2 - metrics.bottom;
         int baseLine = boxHeight / 2 + dy; //基线
 
+        //文字变化的时候 为了保证文字居中 所以需要知道文字区域大小
         Rect bound = new Rect();
         mTextPaint.getTextBounds(mText, 0, mText.length(), bound); //获取文字区域大小
         canvas.drawText(mText, outWidth + (boxWidth/2 - bound.width()/2), baseLine, mTextPaint);
 
 
         //3. 画进度条
-        int lineHeight = mHeight-boxHeight-sp2px(mTriangleValue);
-        drawLine(canvas, boxWidth/2, mWidth - boxWidth/2, lineHeight, mInPaint); //画内线
-        drawLine(canvas, boxWidth/2,  boxWidth/2 + outWidth, lineHeight, mOutPaint); //画外线
+        //方式一：推荐
+        drawHLine(canvas, boxWidth/2, (boxHeight+sp2px(mTriangleValue)),mWidth, mHeight, mInPaint); //画内线
+        drawHLine(canvas, boxWidth/2, (boxHeight+sp2px(mTriangleValue)),boxWidth/2 + outWidth, mHeight, mOutPaint); //画外线
+
+        //方式一：不推荐
+//        int lineHeight = mHeight-boxHeight-sp2px(mTriangleValue);
+//        drawInLine(canvas, boxWidth/2, mWidth - boxWidth/2, lineHeight, mInPaint); //画内线
+//        drawOutLine(canvas, boxWidth/2,  boxWidth/2 + outWidth, lineHeight, mOutPaint); //画外线
     }
 
-
+    /**
+     * @param canvas
+     * @param left 左边距离
+     * @param width 矩形 宽
+     * @param height 矩形 高
+     */
     public void drawBox(Canvas canvas, int left, int width, int height){
         //2.1 画圆角矩形
         RectF rectF = new RectF(left, 0, width + left, height);// 设置个新的长方形
@@ -203,16 +198,69 @@ public class LineProgressView extends View{
         path.moveTo(left + width/2-sp2px(4), height);// 此点为多边形的起点
         path.lineTo(left + width/2+sp2px(4), height);
         path.lineTo(left + width/2, height + sp2px(5));
-
         path.close(); // 使这些点构成封闭的多边形
         canvas.drawPath(path, mBoxPaint);
     }
 
-    public void drawLine(Canvas canvas, int left, int width, int height, Paint paint){
+    /**
+     * 水平进度条(前进方向平的) 通用
+     * @param canvas
+     * @param left
+     * @param top
+     * @param right
+     * @param bottom
+     * @param paint
+     */
+    public void drawHLine(Canvas canvas, int left, int top, int right, int bottom, Paint paint){
+        int height = bottom - top; //高度
+        int r = height/2; //半径
+        int cFirstX = left + r; //第一个分割点x坐标
+        int cSecondX = mWidth - left - r; //第二个分割点x坐标
+        int cy = top + r; //圆心y坐标
+
+        //1. 绘制第一个圆
+        canvas.save();
+        canvas.clipRect(new RectF(left, top, right, bottom));
+        canvas.drawCircle(left+r, cy, r, paint);
+        canvas.restore();
+
+        //2. 绘制中间矩形
+        if(right >= cFirstX){
+            canvas.save();
+            int currentRight = right;
+            if(right > cSecondX){
+                currentRight = cSecondX;
+            }
+            canvas.drawRect(new RectF(left+r, top, currentRight, bottom), paint);
+            canvas.restore();
+        }
+
+        //3. 绘制最后的圆
+        if(right >= cSecondX){
+            canvas.save();
+            canvas.clipRect(new RectF(cSecondX, top, right, bottom));
+            canvas.drawCircle(cSecondX, cy, r, paint);
+            canvas.restore();
+        }
+    }
+
+    public void drawInLine(Canvas canvas, int left, int width, int height, Paint paint){
         RectF rectF = new RectF(left, mHeight-height, width, mHeight); // 设置个新的长方形
         canvas.drawRoundRect(rectF, height/2, height/2, paint); //第二个参数是x半径，第三个参数是y半径
     }
 
+    //进度前进方向为圆角
+    public void drawOutLine(Canvas canvas, int left, int width, int height, Paint paint){
+        if((width-left) >= height){ //绘制圆角方式
+            RectF rectF = new RectF(left, mHeight-height, width, mHeight); // 设置个新的长方形
+            canvas.drawRoundRect(rectF, height/2, height/2, paint); //第二个参数是x半径，第三个参数是y半径
+        }
+        //绘制前面圆
+        RectF rectF = new RectF(left, mHeight-height, width, mHeight);
+        canvas.clipRect(rectF);
+        int r = height/2;
+        canvas.drawCircle(left+r, mHeight-height+r, r, paint);
+    }
 
     private int sp2px(int sp) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp,
@@ -221,6 +269,9 @@ public class LineProgressView extends View{
 
     public void setCurrentNum(double currentNum) {
         this.mCurrentNum = currentNum;
+        if(mCurrentNum > mMaxNum){
+            mCurrentNum = mMaxNum;
+        }
         mText = new DecimalFormat("0.00%").format(mCurrentNum/mMaxNum);
         invalidate();
     }

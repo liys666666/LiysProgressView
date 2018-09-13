@@ -23,8 +23,14 @@
 
     <com.liys.liysprogressview.LineProgressView
         android:id="@+id/line_view"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_margin="10dp"
         app:liys_progress_line_text="0%"/>
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:phoneNumber="true"
+        android:text="1000"/>
 </LinearLayout>
