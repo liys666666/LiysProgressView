@@ -28,5 +28,14 @@
         <attr name="liys_progress_line_outLineColor" format="color"/>
     </declare-styleable>
 
+    <!-- 水波 进度条 -->
+    <declare-styleable name="WaterWaveProView">
+        <attr name="liys_progress_water_text" format="string"/>
+        <attr name="liys_progress_water_textSize" format="dimension"/>
+        <attr name="liys_progress_water_textColor" format="color"/>
+        <attr name="liys_progress_water_inColor" format="color"/>
+        <attr name="liys_progress_water_waterColor" format="color"/>
+    </declare-styleable>
+
 </resources>
 

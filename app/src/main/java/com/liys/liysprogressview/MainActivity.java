@@ -12,6 +12,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     LineProgressView mLineProView;
     ArcProgressView mArcProView;
     EditText editText;
+    WaterWaveProView mWaterView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +22,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mArcProView = findViewById(R.id.arc_view);
         mLineProView = findViewById(R.id.line_view);
         editText = findViewById(R.id.editText);
+        mWaterView = findViewById(R.id.water_view);
         findViewById(R.id.btn_start).setOnClickListener(this);
     }
 
@@ -50,6 +52,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         anim.start();
     }
 
+    public void start3(int value){
+        ValueAnimator anim = ValueAnimator.ofInt(0, value);
+        anim.setDuration(5000);
+        anim.setInterpolator(new AccelerateDecelerateInterpolator());
+        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                mWaterView.setCurrentNum((int)animation.getAnimatedValue());
+            }
+        });
+        anim.start();
+    }
+
 
 
     @Override
@@ -57,5 +72,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int value = Integer.parseInt(editText.getText().toString());
         start(value);
         start2(value);
+        start3(value);
     }
 }

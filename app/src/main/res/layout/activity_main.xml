@@ -33,4 +33,10 @@
         android:layout_height="wrap_content"
         android:phoneNumber="true"
         android:text="1000"/>
+
+    <com.liys.liysprogressview.WaterWaveProView
+        android:id="@+id/water_view"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginLeft="20dp"/>
 </LinearLayout>
