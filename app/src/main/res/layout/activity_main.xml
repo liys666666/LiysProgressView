@@ -12,6 +12,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="开始"/>
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:phoneNumber="true"
+        android:text="1000"/>
     <com.liys.liysprogressview.ArcProgressView
         android:id="@+id/arc_view"
         android:layout_width="wrap_content"
@@ -27,12 +33,13 @@
         android:layout_height="40dp"
         android:layout_margin="10dp"
         app:liys_progress_line_text="0%"/>
-    <EditText
-        android:id="@+id/editText"
+    <com.liys.liysprogressview.HorzProgressView
+        android:id="@+id/horz_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:phoneNumber="true"
-        android:text="1000"/>
+        android:layout_height="15dp"
+        android:layout_margin="10dp"
+        app:liys_progress_horz_inLineSize="5dp"
+        app:liys_progress_horz_outLineSize="5dp"/>
 
     <com.liys.liysprogressview.WaterWaveProView
         android:id="@+id/water_view"
