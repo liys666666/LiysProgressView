@@ -32,12 +32,10 @@ public class HorzProgressView extends View{
 
     private int mWidth; //宽
     private int mHeight; //高
-    int mDefaultWidth = 300; //默认宽，单位sp
-    int mDefaultHeight = 30; //默认高，单位sp
+    private int mDefaultWidth = 300; //默认宽，单位sp
+    private int mDefaultHeight = 20; //默认高，单位sp
 
     int boxWidth = 30; //文字框 宽 单位sp
-    int mMargin = 8; //单位sp
-
 
     //画笔
     private Paint mTextPaint;
@@ -85,7 +83,6 @@ public class HorzProgressView extends View{
             mText = "0%";
         }
         boxWidth = sp2px(boxWidth);
-        mMargin = sp2px(mMargin);
     }
 
     /**
