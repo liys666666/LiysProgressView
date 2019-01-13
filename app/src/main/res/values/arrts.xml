@@ -17,7 +17,7 @@
     </declare-styleable>
 
     <!-- 线性进度条 -->
-    <declare-styleable name="LineProgressView">
+    <declare-styleable name="LineTextProgressView">
         <attr name="liys_progress_line_text" format="string"/>
         <attr name="liys_progress_line_textSize" format="dimension"/>
         <attr name="liys_progress_line_textColor" format="color"/>
@@ -29,7 +29,7 @@
     </declare-styleable>
 
     <!-- 水平进度条 -->
-    <declare-styleable name="HorzProgressView">
+    <declare-styleable name="HorzTextProgressView">
         <attr name="liys_progress_horz_text" format="string"/>
         <attr name="liys_progress_horz_textSize" format="dimension"/>
         <attr name="liys_progress_horz_textColor" format="color"/>

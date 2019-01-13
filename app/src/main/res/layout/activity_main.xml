@@ -27,13 +27,13 @@
         app:liys_progress_arc_textSize="15dp"
         app:liys_progress_arc_text="0%"/>
 
-    <com.liys.liysprogressview.LineProgressView
+    <com.liys.liysprogressview.LineTextProgressView
         android:id="@+id/line_view"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_margin="10dp"
         app:liys_progress_line_text="0%"/>
-    <com.liys.liysprogressview.HorzProgressView
+    <com.liys.liysprogressview.HorzTextProgressView
         android:id="@+id/horz_view"
         android:layout_width="match_parent"
         android:layout_height="15dp"

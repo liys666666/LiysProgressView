@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.support.annotation.Nullable;
@@ -15,7 +16,7 @@ import android.view.View;
 import java.text.DecimalFormat;
 
 
-public class HorzProgressView extends View{
+public class LineTextProgressView extends View{
 
     private double mMaxNum = 10000; //最大值
     private double mCurrentNum = 0; //当前的值
@@ -32,10 +33,11 @@ public class HorzProgressView extends View{
 
     private int mWidth; //宽
     private int mHeight; //高
-    private int mDefaultWidth = 300; //默认宽，单位sp
-    private int mDefaultHeight = 20; //默认高，单位sp
+    int mDefaultWidth = 300; //默认宽，单位sp
+    int mDefaultHeight = 30; //默认高，单位sp
 
-    int boxWidth = 30; //文字框 宽 单位sp
+    int mTriangleValue = 8;
+    
 
     //画笔
     private Paint mTextPaint;
@@ -43,15 +45,15 @@ public class HorzProgressView extends View{
     private Paint mOutPaint;
     private Paint mBoxPaint;
 
-    public HorzProgressView(Context context) {
+    public LineTextProgressView(Context context) {
         this(context, null);
     }
 
-    public HorzProgressView(Context context, @Nullable AttributeSet attrs) {
+    public LineTextProgressView(Context context, @Nullable AttributeSet attrs) {
         this(context, attrs,0);
     }
 
-    public HorzProgressView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public LineTextProgressView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
         //默认值
@@ -63,26 +65,26 @@ public class HorzProgressView extends View{
 
         
         // 获取自定义属性
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.HorzProgressView);
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.LineTextProgressView);
 
-        mText = typedArray.getString(R.styleable.HorzProgressView_liys_progress_horz_text);
-        mTextColor = typedArray.getColor(R.styleable.HorzProgressView_liys_progress_horz_textColor, Color.parseColor(defaultTextColor));
-        mInLineColor = typedArray.getColor(R.styleable.HorzProgressView_liys_progress_horz_inLineColor, Color.parseColor(defaultInColor));
-        mOutLineColor = typedArray.getColor(R.styleable.HorzProgressView_liys_progress_horz_outLineColor, Color.parseColor(defaultOutColor));
+        mText = typedArray.getString(R.styleable.LineTextProgressView_liys_progress_line_text);
+        mTextColor = typedArray.getColor(R.styleable.LineTextProgressView_liys_progress_line_textColor, Color.parseColor(defaultTextColor));
+        mInLineColor = typedArray.getColor(R.styleable.LineTextProgressView_liys_progress_line_inLineColor, Color.parseColor(defaultInColor));
+        mOutLineColor = typedArray.getColor(R.styleable.LineTextProgressView_liys_progress_line_outLineColor, Color.parseColor(defaultOutColor));
 
-        mTextSize = typedArray.getDimensionPixelSize(R.styleable.HorzProgressView_liys_progress_horz_textSize, sp2px(defaultTextSize));
-        mInLineSize = typedArray.getDimensionPixelSize(R.styleable.HorzProgressView_liys_progress_horz_inLineSize, sp2px(defaultLineSize));
-        mOutLineSize = typedArray.getDimensionPixelSize(R.styleable.HorzProgressView_liys_progress_horz_outLineSize, sp2px(defaultLineSize));
+        mTextSize = typedArray.getDimensionPixelSize(R.styleable.LineTextProgressView_liys_progress_line_textSize, sp2px(defaultTextSize));
+        mInLineSize = typedArray.getDimensionPixelSize(R.styleable.LineTextProgressView_liys_progress_line_inLineSize, sp2px(defaultLineSize));
+        mOutLineSize = typedArray.getDimensionPixelSize(R.styleable.LineTextProgressView_liys_progress_line_outLineSize, sp2px(defaultLineSize));
         typedArray.recycle();
 
         setTextPaint();
         setInPaint();
         setOutPaint();
         setBoxPaint();
+
         if(mText == null){
-            mText = "0%";
+            mText = "00.00%";
         }
-        boxWidth = sp2px(boxWidth);
     }
 
     /**
@@ -147,30 +149,36 @@ public class HorzProgressView extends View{
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        //1. 获取当前进度
-        int outWidth = (int)(mCurrentNum/mMaxNum * mWidth); //计算当前进度距离
-        if(outWidth >= mWidth - boxWidth){
-            outWidth = (mWidth - boxWidth);
-        }
+        //1 确定文字外框区域
+        Rect bounds = new Rect();
+        String str = "100.00%";
+        mTextPaint.getTextBounds(str, 0, str.length(), bounds);
 
-        //2. 画进度条
-        int inTop = (mHeight - mInLineSize)/2;
-        int outTop = (mHeight - mOutLineSize)/2;
-        drawHLine(canvas, 0, inTop, mWidth, mHeight - inTop, mInPaint); //画内线
-        drawHLine(canvas, 0, outTop, outWidth+sp2px(2), mHeight - outTop, mOutPaint); //画外线
+        int boxWidth = bounds.width() + sp2px(5);
+        int boxHeight = bounds.height() + sp2px(10);
+        int outWidth = (int)(mCurrentNum/mMaxNum * (mWidth-boxWidth)); //计算当前进度距离
+        drawBox(canvas, outWidth, boxWidth, boxHeight); //绘制外框
 
-        //3. 画文字框
-        drawBox(canvas, outWidth, boxWidth, mHeight);
-
-        //4. 画文字
+        //2 画文字
         Paint.FontMetricsInt metrics = mTextPaint.getFontMetricsInt();
         int dy = (metrics.bottom - metrics.top) / 2 - metrics.bottom;
-        int baseLine = mHeight/2 + dy; //基线
+        int baseLine = boxHeight / 2 + dy; //基线
 
         //文字变化的时候 为了保证文字居中 所以需要知道文字区域大小
         Rect bound = new Rect();
         mTextPaint.getTextBounds(mText, 0, mText.length(), bound); //获取文字区域大小
         canvas.drawText(mText, outWidth + (boxWidth/2 - bound.width()/2), baseLine, mTextPaint);
+
+
+        //3. 画进度条
+        //方式一：推荐
+        drawHLine(canvas, boxWidth/2, (boxHeight+sp2px(mTriangleValue)),mWidth, mHeight, mInPaint); //画内线
+        drawHLine(canvas, boxWidth/2, (boxHeight+sp2px(mTriangleValue)),boxWidth/2 + outWidth, mHeight, mOutPaint); //画外线
+
+        //方式一：不推荐
+//        int lineHeight = mHeight-boxHeight-sp2px(mTriangleValue);
+//        drawInLine(canvas, boxWidth/2, mWidth - boxWidth/2, lineHeight, mInPaint); //画内线
+//        drawOutLine(canvas, boxWidth/2,  boxWidth/2 + outWidth, lineHeight, mOutPaint); //画外线
     }
 
     /**
@@ -180,8 +188,16 @@ public class HorzProgressView extends View{
      * @param height 矩形 高
      */
     public void drawBox(Canvas canvas, int left, int width, int height){
-        RectF rectF = new RectF(left, 0, width + left, height); // 设置个新的长方形
-        canvas.drawRoundRect(rectF, height/2, height/2, mBoxPaint); //第二个参数是x半径，第三个参数是y半径
+        //2.1 画圆角矩形
+        RectF rectF = new RectF(left, 0, width + left, height);// 设置个新的长方形
+        canvas.drawRoundRect(rectF, height/4, height/4, mBoxPaint);//第二个参数是x半径，第三个参数是y半径
+        //2.2 画三角形 (绘制这个三角形,你可以绘制任意多边形)
+        Path path = new Path();
+        path.moveTo(left + width/2-sp2px(4), height);// 此点为多边形的起点
+        path.lineTo(left + width/2+sp2px(4), height);
+        path.lineTo(left + width/2, height + sp2px(5));
+        path.close(); // 使这些点构成封闭的多边形
+        canvas.drawPath(path, mBoxPaint);
     }
 
     /**
@@ -225,6 +241,25 @@ public class HorzProgressView extends View{
             canvas.restore();
         }
     }
+
+    public void drawInLine(Canvas canvas, int left, int width, int height, Paint paint){
+        RectF rectF = new RectF(left, mHeight-height, width, mHeight); // 设置个新的长方形
+        canvas.drawRoundRect(rectF, height/2, height/2, paint); //第二个参数是x半径，第三个参数是y半径
+    }
+
+    //进度前进方向为圆角
+    public void drawOutLine(Canvas canvas, int left, int width, int height, Paint paint){
+        if((width-left) >= height){ //绘制圆角方式
+            RectF rectF = new RectF(left, mHeight-height, width, mHeight); // 设置个新的长方形
+            canvas.drawRoundRect(rectF, height/2, height/2, paint); //第二个参数是x半径，第三个参数是y半径
+        }
+        //绘制前面圆
+        RectF rectF = new RectF(left, mHeight-height, width, mHeight);
+        canvas.clipRect(rectF);
+        int r = height/2;
+        canvas.drawCircle(left+r, mHeight-height+r, r, paint);
+    }
+
     private int sp2px(int sp) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp,
                 getResources().getDisplayMetrics());
@@ -235,7 +270,7 @@ public class HorzProgressView extends View{
         if(mCurrentNum > mMaxNum){
             mCurrentNum = mMaxNum;
         }
-        mText = new DecimalFormat("0%").format(mCurrentNum/mMaxNum);
+        mText = new DecimalFormat("0.00%").format(mCurrentNum/mMaxNum);
         invalidate();
     }
 }

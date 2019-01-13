@@ -9,8 +9,8 @@ import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
-    LineProgressView mLineProView;
-    HorzProgressView mHorzView;
+    LineTextProgressView mLineProView;
+    HorzTextProgressView mHorzView;
     ArcProgressView mArcProView;
     EditText editText;
     WaterWaveProView mWaterView;
