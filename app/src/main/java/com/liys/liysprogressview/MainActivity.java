@@ -10,6 +10,7 @@ import android.widget.EditText;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     LineTextProgressView mLineProView;
+    HorzProgressView lineProgressView;
     HorzTextProgressView mHorzView;
     ArcProgressView mArcProView;
     EditText editText;
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         mArcProView = findViewById(R.id.arc_view);
         mLineProView = findViewById(R.id.line_view);
+        lineProgressView = findViewById(R.id.horzProgressView);
         mHorzView = findViewById(R.id.horz_view);
         mWaterView = findViewById(R.id.water_view);
     }
@@ -39,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 mArcProView.setCurrentNum((int)animation.getAnimatedValue());
                 mLineProView.setCurrentNum((int)animation.getAnimatedValue());
                 mHorzView.setCurrentNum((int)animation.getAnimatedValue());
+                lineProgressView.setCurrentNum((int)animation.getAnimatedValue());
             }
         });
         anim.start();

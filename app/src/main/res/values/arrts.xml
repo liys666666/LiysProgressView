@@ -16,7 +16,7 @@
         <attr name="liys_progress_arc_drawAngle" format="integer"/>
     </declare-styleable>
 
-    <!-- 线性进度条 -->
+    <!-- 线性进度条(带文字) -->
     <declare-styleable name="LineTextProgressView">
         <attr name="liys_progress_line_text" format="string"/>
         <attr name="liys_progress_line_textSize" format="dimension"/>
@@ -26,6 +26,17 @@
         <attr name="liys_progress_line_outLineSize" format="dimension"/>
         <attr name="liys_progress_line_inLineColor" format="color"/>
         <attr name="liys_progress_line_outLineColor" format="color"/>
+    </declare-styleable>
+
+    <!-- 水平进度条(不带文字)-->
+    <declare-styleable name="HorzProgressView">
+        <attr name="liys_progress_line_max" format="integer"/>
+        <attr name="liys_progress_line_progress" format="integer"/>
+        <attr name="liys_progress_line_outSize" format="dimension"/>
+        <attr name="liys_progress_line_inColor" format="color"/>
+        <attr name="liys_progress_line_outColor" format="color"/>
+        <attr name="liys_progress_line_inDrawable" format="reference"/>
+        <attr name="liys_progress_line_outDrawable" format="reference"/>
     </declare-styleable>
 
     <!-- 水平进度条 -->

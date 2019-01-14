@@ -41,6 +41,18 @@
         app:liys_progress_horz_inLineSize="5dp"
         app:liys_progress_horz_outLineSize="5dp"/>
 
+    <com.liys.liysprogressview.HorzProgressView
+        android:id="@+id/horzProgressView"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_margin="10dp"
+        app:liys_progress_line_max="10000"
+        app:liys_progress_line_outColor="@color/color_FFD800"
+        app:liys_progress_line_inDrawable="@drawable/bg"
+        />
+    <!--app:liys_progress_line_inColor="@color/colorPrimary"-->
+    <!--app:liys_progress_line_inDrawable="@drawable/bg"-->
+
     <com.liys.liysprogressview.WaterWaveProView
         android:id="@+id/water_view"
         android:layout_width="150dp"
