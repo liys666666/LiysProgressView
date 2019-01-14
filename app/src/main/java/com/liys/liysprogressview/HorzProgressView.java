@@ -128,7 +128,7 @@ public class HorzProgressView extends View{
 
         //外层
         int left = (mHeight-mOutLineSize)/2;
-        int width = (int)(mWidth*(mCurrentNum/mMaxNum));
+        int width = (int)((mWidth-left)*(mCurrentNum/mMaxNum));
         if(mOutLineColor != 0){
             drawOutLine(canvas, left, width, mOutLineSize, mOutPaint); //画外线
         }
