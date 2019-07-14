@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void start(int value){
         ValueAnimator anim = ValueAnimator.ofInt(0, value);
-        anim.setDuration(1500);
+        anim.setDuration(3000);
         anim.setInterpolator(new AccelerateDecelerateInterpolator());
         anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void start2(int value){
         ValueAnimator anim = ValueAnimator.ofInt(0, value);
-        anim.setDuration(5000);
+        anim.setDuration(3000);
         anim.setInterpolator(new AccelerateDecelerateInterpolator());
         anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
