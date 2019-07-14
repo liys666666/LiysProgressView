@@ -15,7 +15,7 @@ import android.view.View;
 
 /**
  * liys 2019-01-13
- * 水平进度条
+ * 水平进度条(不带文字)
  */
 public class HorzProgressView extends View{
 

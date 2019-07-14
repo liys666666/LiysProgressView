@@ -5,59 +5,59 @@
 
     <!-- 圆弧进度条 -->
     <declare-styleable name="ArcProgressView">
-        <attr name="liys_progress_arc_text" format="string"/>
-        <attr name="liys_progress_arc_textSize" format="dimension"/>
-        <attr name="liys_progress_arc_textColor" format="color"/>
-        <attr name="liys_progress_arc_inCircleColor" format="color"/>
-        <attr name="liys_progress_arc_outCircleColor" format="color"/>
-        <attr name="liys_progress_arc_inCircleSize" format="dimension"/>
-        <attr name="liys_progress_arc_outCircleSize" format="dimension"/>
-        <attr name="liys_progress_arc_startAngle" format="integer"/>
-        <attr name="liys_progress_arc_drawAngle" format="integer"/>
+        <attr name="liys_progress_arc_text" format="string"/> //中间文字
+        <attr name="liys_progress_arc_textSize" format="dimension"/> //文字大小
+        <attr name="liys_progress_arc_textColor" format="color"/> //文字颜色
+        <attr name="liys_progress_arc_inCircleColor" format="color"/> //进度条 内层颜色
+        <attr name="liys_progress_arc_outCircleColor" format="color"/>//进度条 外层颜色
+        <attr name="liys_progress_arc_inCircleSize" format="dimension"/>//进度条 内层大小
+        <attr name="liys_progress_arc_outCircleSize" format="dimension"/>//进度条 外层大小
+        <attr name="liys_progress_arc_startAngle" format="integer"/> //开始角度
+        <attr name="liys_progress_arc_drawAngle" format="integer"/> //绘制角度,默认360, 例如:180时为一个半圆
     </declare-styleable>
 
     <!-- 线性进度条(带文字) -->
     <declare-styleable name="LineTextProgressView">
-        <attr name="liys_progress_line_text" format="string"/>
-        <attr name="liys_progress_line_textSize" format="dimension"/>
-        <attr name="liys_progress_line_textColor" format="color"/>
-        <attr name="liys_progress_line_labelColor" format="color"/>
-        <attr name="liys_progress_line_inLineSize" format="dimension"/>
-        <attr name="liys_progress_line_outLineSize" format="dimension"/>
-        <attr name="liys_progress_line_inLineColor" format="color"/>
-        <attr name="liys_progress_line_outLineColor" format="color"/>
+        <attr name="liys_progress_line_text" format="string"/>  //文字
+        <attr name="liys_progress_line_textSize" format="dimension"/> //文字大小
+        <attr name="liys_progress_line_textColor" format="color"/> //文字颜色
+        <!--<attr name="liys_progress_line_labelColor" format="color"/> -->
+        <attr name="liys_progress_line_inLineSize" format="dimension"/>  //进度条 内层大小
+        <attr name="liys_progress_line_outLineSize" format="dimension"/> //进度条 外层大小
+        <attr name="liys_progress_line_inLineColor" format="color"/> //进度条 内层颜色
+        <attr name="liys_progress_line_outLineColor" format="color"/> //进度条 外层颜色
     </declare-styleable>
 
     <!-- 水平进度条(不带文字)-->
     <declare-styleable name="HorzProgressView">
-        <attr name="liys_progress_line_max" format="integer"/>
-        <attr name="liys_progress_line_progress" format="integer"/>
-        <attr name="liys_progress_line_outSize" format="dimension"/>
-        <attr name="liys_progress_line_inColor" format="color"/>
-        <attr name="liys_progress_line_outColor" format="color"/>
-        <attr name="liys_progress_line_inDrawable" format="reference"/>
-        <attr name="liys_progress_line_outDrawable" format="reference"/>
+        <attr name="liys_progress_line_max" format="integer"/> //最大值
+        <attr name="liys_progress_line_progress" format="integer"/> //当前进度值
+        <attr name="liys_progress_line_outSize" format="dimension"/> //进度条 外层大小
+        <attr name="liys_progress_line_inColor" format="color"/> //进度条 内层颜色
+        <attr name="liys_progress_line_outColor" format="color"/> //进度条 外层颜色
+        <attr name="liys_progress_line_inDrawable" format="reference"/> //进度条 内层图片(可选)
+        <attr name="liys_progress_line_outDrawable" format="reference"/> //进度条 外层图片(可选)
     </declare-styleable>
 
-    <!-- 水平进度条 -->
+    <!-- 水平进度条 (带文字)-->
     <declare-styleable name="HorzTextProgressView">
-        <attr name="liys_progress_horz_text" format="string"/>
-        <attr name="liys_progress_horz_textSize" format="dimension"/>
-        <attr name="liys_progress_horz_textColor" format="color"/>
-        <attr name="liys_progress_horz_labelColor" format="color"/>
-        <attr name="liys_progress_horz_inLineSize" format="dimension"/>
-        <attr name="liys_progress_horz_outLineSize" format="dimension"/>
-        <attr name="liys_progress_horz_inLineColor" format="color"/>
-        <attr name="liys_progress_horz_outLineColor" format="color"/>
+        <attr name="liys_progress_horz_text" format="string"/>  //文字
+        <attr name="liys_progress_horz_textSize" format="dimension"/> //文字大小
+        <attr name="liys_progress_horz_textColor" format="color"/> //文字颜色
+        <!--<attr name="liys_progress_horz_labelColor" format="color"/>-->
+        <attr name="liys_progress_horz_inLineSize" format="dimension"/>  //进度条 内层大小
+        <attr name="liys_progress_horz_outLineSize" format="dimension"/>  //进度条 外层大小
+        <attr name="liys_progress_horz_inLineColor" format="color"/> //进度条 内层颜色
+        <attr name="liys_progress_horz_outLineColor" format="color"/> //进度条 外层颜色
     </declare-styleable>
 
     <!-- 水波 进度条 -->
     <declare-styleable name="WaterWaveProView">
-        <attr name="liys_progress_water_text" format="string"/>
-        <attr name="liys_progress_water_textSize" format="dimension"/>
-        <attr name="liys_progress_water_textColor" format="color"/>
-        <attr name="liys_progress_water_inColor" format="color"/>
-        <attr name="liys_progress_water_waterColor" format="color"/>
+        <attr name="liys_progress_water_text" format="string"/> //中间文字内容
+        <attr name="liys_progress_water_textSize" format="dimension"/> //文字大小
+        <attr name="liys_progress_water_textColor" format="color"/> //文字颜色
+        <attr name="liys_progress_water_inColor" format="color"/> //内层颜色
+        <attr name="liys_progress_water_waterColor" format="color"/> //外层颜色
     </declare-styleable>
 
 </resources>

@@ -14,7 +14,11 @@ import android.view.View;
 
 import java.text.DecimalFormat;
 
-
+/**
+ * 水平进度条(带文字)
+ * @author liys  401654546@qq.com
+ * @version 1.0  2018/09/12
+ */
 public class HorzTextProgressView extends View{
 
     private double mMaxNum = 10000; //最大值
